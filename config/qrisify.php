@@ -14,7 +14,7 @@ return [
     | QRIS-ify mengirim HMAC-SHA256 signature di header ini
     |----------------------------------------------------------------------
     */
-    'webhook_signature_header' => env('QRISIFY_WEBHOOK_SIGNATURE_HEADER', 'X-Qrisify-Signature'),
+    'webhook_signature_header' => env('QRISIFY_WEBHOOK_SIGNATURE_HEADER', 'X-QRIS-Signature'),
 
     /*
     |----------------------------------------------------------------------
