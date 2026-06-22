@@ -43,12 +43,18 @@
 </script>
 
 <Layout>
-    <div class="max-w-md space-y-8">
-        <h1 class="text-xl font-bold text-gray-900">Akun</h1>
+    <div class="max-w-lg space-y-10">
+        <div>
+            <h1 class="text-xl font-bold text-gray-900">Akun</h1>
+            <p class="text-sm text-gray-500 mt-1">Kelola email dan password akun kamu.</p>
+        </div>
 
         <!-- Email Section -->
         <section>
-            <h2 class="text-sm font-semibold text-gray-700 mb-3">Ubah Email</h2>
+            <div class="mb-4">
+                <h2 class="text-base font-semibold text-gray-800">Ubah Email</h2>
+                <p class="text-xs text-gray-500 mt-0.5">Email digunakan untuk login ke dashboard.</p>
+            </div>
 
             {#if emailSuccess}
                 <div class="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg px-4 py-3 mb-4">
@@ -58,7 +64,7 @@
 
             <form onsubmit={(e) => { e.preventDefault(); submitEmail(); }} class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
                 <div>
-                    <label for="email" class="text-xs font-medium text-gray-500 mb-1 block">Email Baru</label>
+                    <label for="email" class="text-xs font-medium text-gray-500 mb-1 block">Email</label>
                     <input
                         id="email"
                         type="email"
@@ -87,19 +93,26 @@
                     {/if}
                 </div>
 
-                <button
-                    type="submit"
-                    disabled={emailForm.processing}
-                    class="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50"
-                >
-                    {emailForm.processing ? 'Menyimpan...' : 'Ubah Email'}
-                </button>
+                <div class="pt-2">
+                    <button
+                        type="submit"
+                        disabled={emailForm.processing}
+                        class="btn-primary"
+                    >
+                        {emailForm.processing ? 'Menyimpan...' : 'Simpan Email'}
+                    </button>
+                </div>
             </form>
         </section>
 
+        <hr class="border-gray-100" />
+
         <!-- Password Section -->
         <section>
-            <h2 class="text-sm font-semibold text-gray-700 mb-3">Ubah Password</h2>
+            <div class="mb-4">
+                <h2 class="text-base font-semibold text-gray-800">Ubah Password</h2>
+                <p class="text-xs text-gray-500 mt-0.5">Minimal 8 karakter.</p>
+            </div>
 
             {#if passwordSuccess}
                 <div class="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg px-4 py-3 mb-4">
@@ -150,13 +163,15 @@
                     />
                 </div>
 
-                <button
-                    type="submit"
-                    disabled={passwordForm.processing}
-                    class="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50"
-                >
-                    {passwordForm.processing ? 'Menyimpan...' : 'Ubah Password'}
-                </button>
+                <div class="pt-2">
+                    <button
+                        type="submit"
+                        disabled={passwordForm.processing}
+                        class="btn-primary"
+                    >
+                        {passwordForm.processing ? 'Menyimpan...' : 'Simpan Password'}
+                    </button>
+                </div>
             </form>
         </section>
     </div>
@@ -173,5 +188,24 @@
     }
     .input-field:focus {
         border-color: #6b7280;
+        box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.08);
+    }
+    .btn-primary {
+        width: 100%;
+        background-color: #111827;
+        color: white;
+        border-radius: 0.5rem;
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.15s;
+    }
+    .btn-primary:hover {
+        background-color: #1f2937;
+    }
+    .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 </style>
