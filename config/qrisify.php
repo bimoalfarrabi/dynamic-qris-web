@@ -2,7 +2,7 @@
 
 return [
 
-    'base_url' => env('QRISIFY_BASE_URL', 'https://api.qris-ify.com'),
+    'base_url' => env('QRISIFY_BASE_URL', 'https://qrisify.adihub.my.id'),
 
     'api_key' => env('QRISIFY_API_KEY', ''),
 
