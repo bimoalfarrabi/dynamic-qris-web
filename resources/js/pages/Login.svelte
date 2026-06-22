@@ -46,7 +46,6 @@
                     placeholder="admin@qris.local"
                     class="w-full"
                     autocomplete="email"
-                    autofocus
                 />
                 {#if form.errors.email}
                     <p class="text-xs text-red-600 mt-1">{form.errors.email}</p>

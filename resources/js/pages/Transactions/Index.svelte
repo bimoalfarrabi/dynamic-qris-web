@@ -6,10 +6,14 @@
 
     let { transactions, filters = {} } = $props();
 
-    let search = $state(filters?.search || '');
-    let status = $state(filters?.status || '');
-    let dateFrom = $state(filters?.date_from || '');
-    let dateTo = $state(filters?.date_to || '');
+    // svelte-ignore state_referenced_locally
+    let search = $state(filters.search || '');
+    // svelte-ignore state_referenced_locally
+    let status = $state(filters.status || '');
+    // svelte-ignore state_referenced_locally
+    let dateFrom = $state(filters.date_from || '');
+    // svelte-ignore state_referenced_locally
+    let dateTo = $state(filters.date_to || '');
 
     let searchTimeout;
 
@@ -54,12 +58,13 @@
         <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
             <!-- Search -->
             <div class="md:col-span-2">
-                <label class="text-xs font-medium text-gray-500 mb-1 block">Cari</label>
+                <label for="search-input" class="text-xs font-medium text-gray-500 mb-1 block">Cari</label>
                 <div class="relative">
                     <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input
+                        id="search-input"
                         type="text"
                         bind:value={search}
                         oninput={onSearchInput}
@@ -71,8 +76,9 @@
 
             <!-- Status -->
             <div>
-                <label class="text-xs font-medium text-gray-500 mb-1 block">Status</label>
+                <label for="status-select" class="text-xs font-medium text-gray-500 mb-1 block">Status</label>
                 <select
+                    id="status-select"
                     bind:value={status}
                     onchange={applyFilters}
                     class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -85,8 +91,9 @@
 
             <!-- Date From -->
             <div>
-                <label class="text-xs font-medium text-gray-500 mb-1 block">Dari Tanggal</label>
+                <label for="date-from" class="text-xs font-medium text-gray-500 mb-1 block">Dari Tanggal</label>
                 <input
+                    id="date-from"
                     type="date"
                     bind:value={dateFrom}
                     onchange={applyFilters}
@@ -96,8 +103,9 @@
 
             <!-- Date To -->
             <div>
-                <label class="text-xs font-medium text-gray-500 mb-1 block">Sampai Tanggal</label>
+                <label for="date-to" class="text-xs font-medium text-gray-500 mb-1 block">Sampai Tanggal</label>
                 <input
+                    id="date-to"
                     type="date"
                     bind:value={dateTo}
                     onchange={applyFilters}
