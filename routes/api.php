@@ -5,6 +5,9 @@ use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// ── Health check (no auth) ──────────────────────────────────
+Route::get('/health', fn () => response()->json(['status' => 'ok']));
+
 // ── Authenticated routes (Android app) ─────────────────────
 Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
     Route::get('/user', function (Request $request) {
