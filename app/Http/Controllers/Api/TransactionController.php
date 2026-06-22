@@ -54,20 +54,17 @@ class TransactionController extends Controller
         try {
             $qrisifyPayload = [
                 'amount' => $validated['amount'],
+                'external_id' => $validated['external_id'] ?? 'TXN-'.now()->format('YmdHis').'-'.mt_rand(100, 999),
             ];
 
-            if (isset($validated['external_id'])) {
-                $qrisifyPayload['external_id'] = $validated['external_id'];
-            }
-
-            if (isset($validated['expiry_seconds'])) {
-                $qrisifyPayload['expiry_seconds'] = $validated['expiry_seconds'];
+            if (isset($validated['expiry_minutes'])) {
+                $qrisifyPayload['expiry_minutes'] = $validated['expiry_minutes'];
             }
 
             $qrisifyData = $this->qrisify->createTransaction($qrisifyPayload);
 
-            $expirySeconds = $validated['expiry_seconds'] ?? 900;
-            $expiresAt = now()->addSeconds($expirySeconds);
+            $expiryMinutes = $validated['expiry_minutes'] ?? 15;
+            $expiresAt = now()->addMinutes($expiryMinutes);
 
             $transaction = Transaction::create([
                 'qrisify_transaction_id' => $qrisifyData['transaction_id'] ?? null,

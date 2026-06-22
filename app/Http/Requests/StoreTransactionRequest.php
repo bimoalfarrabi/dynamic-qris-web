@@ -19,7 +19,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'amount' => 'required|integer|min:1|max:100000000',
             'external_id' => 'sometimes|string|max:255',
-            'expiry_seconds' => 'sometimes|integer|min:60|max:86400',
+            'expiry_minutes' => 'sometimes|integer|min:1|max:1440',
         ];
     }
 }
