@@ -33,7 +33,7 @@ class QrisifyApiClient
     public function createTransaction(array $payload): array
     {
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer '.$this->apiKey,
+            'x-api-key' => $this->apiKey,
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ])
@@ -64,7 +64,7 @@ class QrisifyApiClient
     public function getQrImage(string $qrisifyTransactionId): array
     {
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer '.$this->apiKey,
+            'x-api-key' => $this->apiKey,
             'Accept' => 'image/png',
         ])
             ->timeout($this->timeout)
