@@ -14,6 +14,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/transactions', [DashboardController::class, 'transactions'])->name('transactions.index');
     Route::get('/transactions/{id}', [DashboardController::class, 'show'])->name('transactions.show');
-    Route::get('/change-password', [AuthController::class, 'changePasswordForm'])->name('password.form');
-    Route::put('/change-password', [AuthController::class, 'changePassword'])->name('password.update');
+    Route::get('/account', [AuthController::class, 'changePasswordForm'])->name('account');
+    Route::put('/account/password', [AuthController::class, 'changePassword'])->name('password.update');
+    Route::put('/account/email', [AuthController::class, 'changeEmail'])->name('email.update');
 });

@@ -45,7 +45,7 @@ class AuthController extends Controller
 
     public function changePasswordForm()
     {
-        return Inertia::render('ChangePassword');
+        return Inertia::render('Account');
     }
 
     public function changePassword(Request $request)
@@ -65,6 +65,26 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/')->with('success', 'Password berhasil diubah.');
+        return back()->with('success', 'Password berhasil diubah.');
+    }
+
+    public function changeEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users,email,' . $request->user()->id,
+            'current_password' => 'required|string',
+        ]);
+
+        if (! Hash::check($request->current_password, $request->user()->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => 'Password salah.',
+            ]);
+        }
+
+        $request->user()->update([
+            'email' => $request->email,
+        ]);
+
+        return back()->with('success', 'Email berhasil diubah.');
     }
 }
