@@ -55,6 +55,7 @@ class TransactionController extends Controller
             $qrisifyPayload = [
                 'amount' => $validated['amount'],
                 'external_id' => $validated['external_id'] ?? 'TXN-'.now()->format('YmdHis').'-'.mt_rand(100, 999),
+                'unique_code' => 0,
             ];
 
             if (isset($validated['expiry_minutes'])) {
