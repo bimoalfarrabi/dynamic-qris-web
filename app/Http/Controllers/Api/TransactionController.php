@@ -64,7 +64,7 @@ class TransactionController extends Controller
 
             $qrisifyData = $this->qrisify->createTransaction($qrisifyPayload);
 
-            $expiryMinutes = $validated['expiry_minutes'] ?? 15;
+            $expiryMinutes = $validated['expiry_minutes'] ?? 5;
             $expiresAt = now()->addMinutes($expiryMinutes);
 
             $transaction = Transaction::create([
