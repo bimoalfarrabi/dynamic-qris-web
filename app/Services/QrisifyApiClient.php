@@ -89,6 +89,42 @@ class QrisifyApiClient
     }
 
     /**
+     * Ping QRIS-ify API and return connection details for diagnostics.
+     *
+     * @return array{ok: bool, status_code: int|null, response_time_ms: int, error: string|null}
+     */
+    public function ping(): array
+    {
+        $start = hrtime(true);
+        try {
+            $response = Http::withHeaders([
+                'x-api-key' => $this->apiKey,
+                'Accept' => 'application/json',
+            ])
+                ->timeout(10)
+                ->get("{$this->baseUrl}/api/v1/transactions", ['limit' => 1]);
+
+            $ms = (int) round((hrtime(true) - $start) / 1_000_000);
+
+            return [
+                'ok' => $response->successful(),
+                'status_code' => $response->status(),
+                'response_time_ms' => $ms,
+                'error' => $response->successful() ? null : $response->body(),
+            ];
+        } catch (\Throwable $e) {
+            $ms = (int) round((hrtime(true) - $start) / 1_000_000);
+
+            return [
+                'ok' => false,
+                'status_code' => null,
+                'response_time_ms' => $ms,
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    /**
      * Verify HMAC-SHA256 webhook signature from QRIS-ify.
      */
     public function verifyWebhookSignature(string $payload, string $signature): bool

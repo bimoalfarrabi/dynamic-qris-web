@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\StatusController as ApiStatusController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,7 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
     Route::apiResource('transactions', TransactionController::class)->only(['index', 'store', 'show']);
     Route::get('/transactions/{id}/qr', [TransactionController::class, 'qrImage']);
     Route::post('/transactions/{id}/cancel', [TransactionController::class, 'cancel']);
+    Route::get('/status/qrisify', [ApiStatusController::class, 'qrisify']);
 });
 
 // ── Webhook (no auth, verified via HMAC signature, rate limited) ─────
