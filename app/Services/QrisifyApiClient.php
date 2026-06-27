@@ -97,12 +97,10 @@ class QrisifyApiClient
     {
         $start = hrtime(true);
         try {
-            $response = Http::withHeaders([
-                'x-api-key' => $this->apiKey,
-                'Accept' => 'application/json',
-            ])
+            // ponytail: /api/platform-stats is public + no auth, lightest valid ping
+            $response = Http::withHeaders(['Accept' => 'application/json'])
                 ->timeout(10)
-                ->get("{$this->baseUrl}/api/v1/transactions", ['limit' => 1]);
+                ->get("{$this->baseUrl}/api/platform-stats");
 
             $ms = (int) round((hrtime(true) - $start) / 1_000_000);
 
