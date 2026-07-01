@@ -18,6 +18,8 @@
         ? { color: 'text-green-600', bg: 'bg-green-50 border-green-200' }
         : { color: 'text-red-600', bg: 'bg-red-50 border-red-200' };
 
+    const s = $derived(statusStyle(qrisify?.ok));
+
     function formatMs(ms) {
         if (ms === null || ms === undefined) return '-';
         return `${ms}ms`;
@@ -42,7 +44,6 @@
         </div>
 
         <!-- QRIS-ify Card -->
-        {@const s = statusStyle(qrisify?.ok)}
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-4">
             <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
                 <div class="flex items-center gap-3">
