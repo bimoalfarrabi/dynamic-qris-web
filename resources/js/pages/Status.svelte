@@ -24,6 +24,11 @@
         if (ms === null || ms === undefined) return '-';
         return `${ms}ms`;
     }
+
+    function formatDate(iso) {
+        if (!iso) return '-';
+        return new Date(iso).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+    }
 </script>
 
 <Layout>
@@ -73,7 +78,7 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 mb-0.5">Terakhir Dicek</p>
-                    <p class="font-medium text-gray-900">{qrisify?.checked_at ?? '-'}</p>
+                    <p class="font-medium text-gray-900">{formatDate(qrisify?.checked_at)}</p>
                 </div>
                 {#if qrisify?.error}
                     <div>
