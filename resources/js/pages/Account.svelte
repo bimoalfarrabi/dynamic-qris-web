@@ -4,42 +4,50 @@
 
     const page = usePage();
 
-    // Email form
+    // ponytail: one helper kills two identical success-flash patterns
+    function useFlash() {
+        let on = $state(false);
+        return {
+            get on() { return on; },
+            trigger() { on = true; setTimeout(() => on = false, 3000); },
+        };
+    }
+
+    const emailFlash = useFlash();
+    const passwordFlash = useFlash();
+
     let emailForm = useForm({
         email: page.props.auth.user.email,
         current_password: '',
     });
 
-    let emailSuccess = $state(false);
-
     function submitEmail() {
         emailForm.put('/account/email', {
             onSuccess: () => {
                 emailForm.reset('current_password');
-                emailSuccess = true;
-                setTimeout(() => emailSuccess = false, 3000);
+                emailFlash.trigger();
             },
         });
     }
 
-    // Password form
     let passwordForm = useForm({
         current_password: '',
         password: '',
         password_confirmation: '',
     });
 
-    let passwordSuccess = $state(false);
-
     function submitPassword() {
         passwordForm.put('/account/password', {
             onSuccess: () => {
                 passwordForm.reset();
-                passwordSuccess = true;
-                setTimeout(() => passwordSuccess = false, 3000);
+                passwordFlash.trigger();
             },
         });
     }
+
+    // ponytail: shared input classes inline — no scoped CSS needed
+    const inputCls = 'w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-gray-400 focus:ring-2 focus:ring-gray-400/10';
+    const btnCls = 'w-full bg-gray-900 text-white rounded-lg px-4 py-2.5 text-sm font-medium cursor-pointer hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors';
 </script>
 
 <Layout>
@@ -56,7 +64,7 @@
                 <p class="text-xs text-gray-500 mt-0.5">Email digunakan untuk login ke dashboard.</p>
             </div>
 
-            {#if emailSuccess}
+            {#if emailFlash.on}
                 <div class="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg px-4 py-3 mb-4">
                     Email berhasil diubah.
                 </div>
@@ -70,7 +78,7 @@
                         type="email"
                         bind:value={emailForm.email}
                         placeholder="email@example.com"
-                        class="w-full input-field"
+                        class={inputCls}
                         autocomplete="email"
                     />
                     {#if emailForm.errors.email}
@@ -85,7 +93,7 @@
                         type="password"
                         bind:value={emailForm.current_password}
                         placeholder="••••••••"
-                        class="w-full input-field"
+                        class={inputCls}
                         autocomplete="current-password"
                     />
                     {#if emailForm.errors.current_password}
@@ -94,11 +102,7 @@
                 </div>
 
                 <div class="pt-2">
-                    <button
-                        type="submit"
-                        disabled={emailForm.processing}
-                        class="btn-primary"
-                    >
+                    <button type="submit" disabled={emailForm.processing} class={btnCls}>
                         {emailForm.processing ? 'Menyimpan...' : 'Simpan Email'}
                     </button>
                 </div>
@@ -114,7 +118,7 @@
                 <p class="text-xs text-gray-500 mt-0.5">Minimal 8 karakter.</p>
             </div>
 
-            {#if passwordSuccess}
+            {#if passwordFlash.on}
                 <div class="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg px-4 py-3 mb-4">
                     Password berhasil diubah.
                 </div>
@@ -128,7 +132,7 @@
                         type="password"
                         bind:value={passwordForm.current_password}
                         placeholder="••••••••"
-                        class="w-full input-field"
+                        class={inputCls}
                         autocomplete="current-password"
                     />
                     {#if passwordForm.errors.current_password}
@@ -143,7 +147,7 @@
                         type="password"
                         bind:value={passwordForm.password}
                         placeholder="••••••••"
-                        class="w-full input-field"
+                        class={inputCls}
                         autocomplete="new-password"
                     />
                     {#if passwordForm.errors.password}
@@ -158,17 +162,13 @@
                         type="password"
                         bind:value={passwordForm.password_confirmation}
                         placeholder="••••••••"
-                        class="w-full input-field"
+                        class={inputCls}
                         autocomplete="new-password"
                     />
                 </div>
 
                 <div class="pt-2">
-                    <button
-                        type="submit"
-                        disabled={passwordForm.processing}
-                        class="btn-primary"
-                    >
+                    <button type="submit" disabled={passwordForm.processing} class={btnCls}>
                         {passwordForm.processing ? 'Menyimpan...' : 'Simpan Password'}
                     </button>
                 </div>
@@ -176,36 +176,3 @@
         </section>
     </div>
 </Layout>
-
-<style>
-    .input-field {
-        border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
-        padding: 0.625rem 0.875rem;
-        font-size: 0.875rem;
-        outline: none;
-        transition: border-color 0.15s;
-    }
-    .input-field:focus {
-        border-color: #6b7280;
-        box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.08);
-    }
-    .btn-primary {
-        width: 100%;
-        background-color: #111827;
-        color: white;
-        border-radius: 0.5rem;
-        padding: 0.625rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.15s;
-    }
-    .btn-primary:hover {
-        background-color: #1f2937;
-    }
-    .btn-primary:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-</style>

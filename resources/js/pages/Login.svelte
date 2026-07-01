@@ -14,6 +14,9 @@
             },
         });
     }
+
+    // ponytail: shared with Account.svelte — move to lib/styles.js if a third user appears
+    const inputCls = 'w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-gray-400 focus:ring-2 focus:ring-gray-400/10';
 </script>
 
 <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -44,12 +47,9 @@
                     type="email"
                     bind:value={form.email}
                     placeholder="admin@qris.local"
-                    class="w-full"
+                    class={inputCls}
                     autocomplete="email"
                 />
-                {#if form.errors.email}
-                    <p class="text-xs text-red-600 mt-1">{form.errors.email}</p>
-                {/if}
             </div>
 
             <div>
@@ -59,7 +59,7 @@
                     type="password"
                     bind:value={form.password}
                     placeholder="••••••••"
-                    class="w-full"
+                    class={inputCls}
                     autocomplete="current-password"
                 />
                 {#if form.errors.password}
@@ -68,35 +68,17 @@
             </div>
 
             <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                <input type="checkbox" bind:checked={form.remember} class="rounded border-gray-300" />
+                <input type="checkbox" bind:checked={form.remember} class="w-4 h-4 rounded border-gray-300" />
                 Ingat saya
             </label>
 
             <button
                 type="submit"
                 disabled={form.processing}
-                class="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50"
+                class="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 cursor-pointer"
             >
                 {form.processing ? 'Memproses...' : 'Login'}
             </button>
         </form>
     </div>
 </div>
-
-<style>
-    input[type="email"], input[type="password"] {
-        border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
-        padding: 0.625rem 0.875rem;
-        font-size: 0.875rem;
-        outline: none;
-        transition: border-color 0.15s;
-    }
-    input[type="email"]:focus, input[type="password"]:focus {
-        border-color: #6b7280;
-    }
-    input[type="checkbox"] {
-        width: 1rem;
-        height: 1rem;
-    }
-</style>

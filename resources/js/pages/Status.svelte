@@ -13,13 +13,10 @@
         });
     }
 
-    function statusColor(ok) {
-        return ok ? 'text-green-600' : 'text-red-600';
-    }
-
-    function statusBg(ok) {
-        return ok ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
-    }
+    // ponytail: two parallel functions → one object lookup
+    const statusStyle = (ok) => ok
+        ? { color: 'text-green-600', bg: 'bg-green-50 border-green-200' }
+        : { color: 'text-red-600', bg: 'bg-red-50 border-red-200' };
 
     function formatMs(ms) {
         if (ms === null || ms === undefined) return '-';
@@ -45,7 +42,8 @@
         </div>
 
         <!-- QRIS-ify Card -->
-        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        {@const s = statusStyle(qrisify?.ok)}
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-4">
             <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
@@ -55,43 +53,38 @@
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-900">QRIS-ify API</p>
-                        <p class="text-xs text-gray-500 font-mono">{base_url}</p>
+                        <p class="text-xs text-gray-500">{base_url}</p>
                     </div>
                 </div>
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border {statusBg(qrisify.ok)}">
-                    <span class="w-1.5 h-1.5 rounded-full {qrisify.ok ? 'bg-green-500' : 'bg-red-500'}"></span>
-                    <span class="{statusColor(qrisify.ok)}">{qrisify.ok ? 'Terhubung' : 'Gagal'}</span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border {s.bg}">
+                    <span class="w-1.5 h-1.5 rounded-full {qrisify?.ok ? 'bg-green-500' : 'bg-red-500'}"></span>
+                    <span class="{s.color}">{qrisify?.ok ? 'Online' : 'Offline'}</span>
                 </span>
             </div>
-
-            <div class="px-5 py-4 space-y-3">
-                <!-- Log rows -->
-                <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">HTTP Status</span>
-                    <span class="font-mono font-medium {qrisify.status_code >= 200 && qrisify.status_code < 300 ? 'text-green-600' : 'text-red-600'}">
-                        {qrisify.status_code ?? 'timeout / no response'}
-                    </span>
+            <div class="px-5 py-4 grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <p class="text-xs text-gray-500 mb-0.5">Status Code</p>
+                    <p class="font-medium text-gray-900">{qrisify?.status_code ?? '-'}</p>
                 </div>
-                <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">Response Time</span>
-                    <span class="font-mono font-medium text-gray-900">{formatMs(qrisify.response_time_ms)}</span>
+                <div>
+                    <p class="text-xs text-gray-500 mb-0.5">Response Time</p>
+                    <p class="font-medium text-gray-900">{formatMs(qrisify?.response_time_ms)}</p>
                 </div>
-                <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">Dicek pada</span>
-                    <span class="font-mono text-gray-600 text-xs">{new Date(qrisify.checked_at).toLocaleString('id-ID')}</span>
+                <div>
+                    <p class="text-xs text-gray-500 mb-0.5">Terakhir Dicek</p>
+                    <p class="font-medium text-gray-900">{qrisify?.checked_at ?? '-'}</p>
                 </div>
-
-                {#if qrisify.error}
-                    <div class="mt-2 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
-                        <p class="text-xs font-medium text-red-700 mb-1">Error Detail</p>
-                        <pre class="text-xs text-red-600 whitespace-pre-wrap break-all font-mono">{qrisify.error}</pre>
+                {#if qrisify?.error}
+                    <div>
+                        <p class="text-xs text-gray-500 mb-0.5">Error</p>
+                        <p class="font-medium text-red-600 text-xs">{qrisify.error}</p>
                     </div>
                 {/if}
             </div>
         </div>
 
-        <!-- Laravel self health -->
-        <div class="mt-4 bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <!-- Laravel Backend Card (always online if page loads) -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div class="px-5 py-4 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">

@@ -5,7 +5,8 @@
 
     let { transaction } = $props();
 
-    const detailRows = $derived([
+    // ponytail: plain const — transaction is a static prop, $derived is wrong here
+    const detailRows = [
         { label: 'Transaction ID', value: transaction.id, mono: true },
         { label: 'QRIS-ify ID', value: transaction.qrisify_transaction_id, mono: true },
         { label: 'External ID', value: transaction.external_id },
@@ -20,7 +21,7 @@
         { label: 'Dibayar Pada', value: transaction.paid_at ? formatDate(transaction.paid_at) : '-' },
         { label: 'Dibatalkan Pada', value: transaction.cancelled_at ? formatDate(transaction.cancelled_at) : '-' },
         { label: 'Diperbarui', value: formatDate(transaction.updated_at) },
-    ]);
+    ];
 </script>
 
 <Layout>
@@ -48,23 +49,18 @@
 
         <!-- Detail -->
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
-            <div class="px-5 py-4 border-b border-gray-200">
-                <h3 class="text-sm font-semibold text-gray-900">Detail Transaksi</h3>
-            </div>
-            <div class="divide-y divide-gray-100">
-                {#each detailRows as row}
-                    <div class="px-5 py-3 flex items-center justify-between gap-4">
-                        <span class="text-sm text-gray-500 flex-shrink-0">{row.label}</span>
-                        {#if row.badge}
-                            <StatusBadge status={row.badge} />
-                        {:else if row.mono}
-                            <span class="text-sm text-gray-900 font-mono text-xs text-right break-all">{row.value || '-'}</span>
-                        {:else}
-                            <span class="text-sm text-gray-900 text-right">{row.value || '-'}</span>
-                        {/if}
-                    </div>
-                {/each}
-            </div>
+            {#each detailRows as row}
+                <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-0">
+                    <span class="text-sm text-gray-500">{row.label}</span>
+                    {#if row.badge}
+                        <StatusBadge status={row.badge} />
+                    {:else if row.mono}
+                        <span class="text-sm text-gray-900 font-mono text-xs text-right break-all">{row.value || '-'}</span>
+                    {:else}
+                        <span class="text-sm text-gray-900 text-right">{row.value || '-'}</span>
+                    {/if}
+                </div>
+            {/each}
         </div>
 
         <!-- QR String (if available) -->

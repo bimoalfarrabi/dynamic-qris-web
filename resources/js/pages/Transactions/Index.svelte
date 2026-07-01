@@ -114,7 +114,7 @@
             </div>
         </div>
 
-        {#if filters.search || filters.status || filters.date_from || filters.date_to}
+        {#if search || status || dateFrom || dateTo}
             <button
                 onclick={resetFilters}
                 class="mt-3 text-xs text-gray-500 hover:text-gray-700 font-medium"
@@ -148,16 +148,15 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         {#each transactions.data as tx}
-                            <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick={() => window.location.href = `/transactions/${tx.id}`}>
-                                <td class="px-5 py-3 font-mono text-xs text-blue-600 hover:underline">
-                                    {tx.id.slice(0, 8)}...
+                            <!-- ponytail: <a> row — native Inertia link, no JS, accessible -->
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-5 py-3 font-mono text-xs">
+                                    <a href="/transactions/{tx.id}" class="text-blue-600 hover:underline">{tx.id.slice(0, 8)}...</a>
                                 </td>
-                                <td class="px-5 py-3 text-gray-600">{tx.external_id || '-'}</td>
-                                <td class="px-5 py-3 font-medium text-gray-900">
-                                    {formatCurrency(tx.amount_total || tx.amount_requested)}
-                                </td>
-                                <td class="px-5 py-3"><StatusBadge status={tx.status} /></td>
-                                <td class="px-5 py-3">
+                                <td class="px-5 py-3 text-gray-600"><a href="/transactions/{tx.id}" class="block">{tx.external_id || '-'}</a></td>
+                                <td class="px-5 py-3 font-medium text-gray-900"><a href="/transactions/{tx.id}" class="block">{formatCurrency(tx.amount_total || tx.amount_requested)}</a></td>
+                                <td class="px-5 py-3"><a href="/transactions/{tx.id}" class="block"><StatusBadge status={tx.status} /></a></td>
+                                <td class="px-5 py-3"><a href="/transactions/{tx.id}" class="block">
                                     {#if tx.webhook_status === 'SENT_SUCCESS'}
                                         <span class="text-xs text-green-600">✓ Terkirim</span>
                                     {:else if tx.webhook_status === 'FAILED'}
@@ -165,8 +164,8 @@
                                     {:else}
                                         <span class="text-xs text-gray-400">—</span>
                                     {/if}
-                                </td>
-                                <td class="px-5 py-3 text-gray-500 text-xs">{formatDate(tx.created_at)}</td>
+                                </a></td>
+                                <td class="px-5 py-3 text-gray-500 text-xs"><a href="/transactions/{tx.id}" class="block">{formatDate(tx.created_at)}</a></td>
                             </tr>
                         {/each}
                     </tbody>
