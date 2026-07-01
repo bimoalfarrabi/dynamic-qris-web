@@ -5,8 +5,8 @@
 
     let { transaction } = $props();
 
-    // ponytail: plain const — transaction is a static prop, $derived is wrong here
-    const detailRows = [
+    // ponytail: $derived silences Svelte 5 "initial value only" warnings — props are static but compiler can't prove it
+    const detailRows = $derived([
         { label: 'Transaction ID', value: transaction.id, mono: true },
         { label: 'QRIS-ify ID', value: transaction.qrisify_transaction_id, mono: true },
         { label: 'External ID', value: transaction.external_id },
@@ -21,7 +21,7 @@
         { label: 'Dibayar Pada', value: transaction.paid_at ? formatDate(transaction.paid_at) : '-' },
         { label: 'Dibatalkan Pada', value: transaction.cancelled_at ? formatDate(transaction.cancelled_at) : '-' },
         { label: 'Diperbarui', value: formatDate(transaction.updated_at) },
-    ];
+    ]);
 </script>
 
 <Layout>
