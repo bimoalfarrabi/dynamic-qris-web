@@ -37,7 +37,7 @@ class WebhookController extends Controller
         // 1. Verify signature
         if (! $this->qrisify->verifyWebhookSignature($rawPayload, $signature)) {
             Log::warning('QRIS-ify webhook signature verification failed', [
-                'signature' => $signature,
+                'ip' => $request->ip(),
             ]);
 
             return response()->json([

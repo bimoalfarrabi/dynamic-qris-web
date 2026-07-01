@@ -54,7 +54,7 @@ class TransactionController extends Controller
         try {
             $qrisifyPayload = [
                 'amount' => $validated['amount'],
-                'external_id' => $validated['external_id'] ?? 'TXN-'.now()->format('YmdHis').'-'.mt_rand(100, 999),
+                'external_id' => $validated['external_id'] ?? 'TXN-'.now()->format('YmdHis').'-'.random_int(100, 999),
                 'unique_code' => 0,
             ];
 
